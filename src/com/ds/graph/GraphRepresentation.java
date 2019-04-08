@@ -1,94 +1,107 @@
 package com.ds.graph;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphRepresentation {
 	
 	public static final String DIRECTED_GRAPH_TYPE="D";
 	public static final String UNDIRECTED_GRAPH_TYPE="U";
-
-	public static void main(String[] args) {
-
-		AdjMatrixGraph amGraph = new AdjMatrixGraph(GraphRepresentation.UNDIRECTED_GRAPH_TYPE,5);
+	
+	public static void main(String[] args){
+		AdjacenyMatrixGraph amGraph= new AdjacenyMatrixGraph(DIRECTED_GRAPH_TYPE, 5);
 		amGraph.init();
-		amGraph.printGraph();
-
-		AdjListGraph alGraph = new AdjListGraph(GraphRepresentation.UNDIRECTED_GRAPH_TYPE,5);
+		
+		System.out.println("-------------------------------------");
+		
+		AdjacenyListGraph alGraph= new AdjacenyListGraph(DIRECTED_GRAPH_TYPE, 5);
 		alGraph.init();
-		alGraph.printGraph();
-
 	}
-
+	
+	
 }
 
-class AdjMatrixGraph {
-
+class AdjacenyMatrixGraph{
 	private String graphType;
 	private int vertices;
-	private Integer[][] edges;
-
-	public AdjMatrixGraph(String graphType,int vertices) {
+	private int[][] edges;
+	
+	public AdjacenyMatrixGraph(String graphType,int vertices){
+		this.graphType=graphType;
+		this.vertices=vertices;
+		edges=new int[vertices][vertices];
+		
+		for(int i=0;i<vertices;i++){
+			for(int j=0;j<vertices;j++){
+				edges[i][j]=0;
+			}
+		}
+	}
+	
+	public String getGraphType() {
+		return graphType;
+	}
+	public void setGraphType(String graphType) {
 		this.graphType = graphType;
-		this.vertices = vertices;
-		this.edges = new Integer[vertices][vertices];
-
-		for (int i = 0; i < vertices; i++) {
-			for (int j = 0; j < vertices; j++) {
-				edges[i][j] = 0;
-			}
-		}
 	}
-
-	public void addEdge(int src, int dest) {
-		edges[src][dest] = 1;
-		if(this.graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
-			edges[dest][src] = 1;
-		}
-	}
-
-	public void removeEdge(int src, int dest) {
-		edges[src][dest] = 0;
-		if(this.graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
-			edges[dest][src] = 0;
-		}
-	}
-
-	public void printGraph() {
-		for (int i = 0; i < vertices; i++) {
-			for (int j = 0; j < vertices; j++) {
-				System.out.print(edges[i][j] + " ");
-			}
-			System.out.print("\n");
-		}
-
-		System.out.print("-----------------------------------------------------------");
-	}
-
-	public void init() {
-		this.addEdge(0, 1);
-		this.addEdge(0, 2);
-		this.addEdge(1, 2);
-		this.addEdge(2, 0);
-		this.addEdge(2, 3);
-		this.addEdge(3, 3);
-	}
-
 	public int getVertices() {
 		return vertices;
 	}
-
 	public void setVertices(int vertices) {
 		this.vertices = vertices;
 	}
-
-	public Integer[][] getEdges() {
+	public int[][] getEdges() {
 		return edges;
 	}
-
-	public void setEdges(Integer[][] edges) {
+	public void setEdges(int[][] edges) {
 		this.edges = edges;
 	}
+	public void addEdge(int src, int dest){
+		edges[src][dest]=1;
+		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+			edges[dest][src ]=1;
+		}
+	}
+	public void removeEdge(int src, int dest){
+		edges[src][dest]=0;
+		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+			edges[dest][src ]=0;
+		}
+	}
+	public void printGraph(){
+		for(int i=0;i<vertices;i++){
+			for(int j=0;j<vertices;j++){
+				System.out.print(edges[i][j] + " ");
+			}
+			System.out.println("");
+		}
+	}
+	public void init(){
+		addEdge(0, 1); 
+	    addEdge(0, 4); 
+	    addEdge(1, 2); 
+	    addEdge(1, 3); 
+	    addEdge(1, 4); 
+	    addEdge(2, 3); 
+	    addEdge(3, 4); 
+	    printGraph(); 
+	}
+	
+}
 
+class AdjacenyListGraph{
+	private String graphType;
+	private int vertices;
+	private List<Integer>[] edges;
+	
+	public AdjacenyListGraph(String graphType,int vertices){
+		this.graphType=graphType;
+		this.vertices=vertices;
+		edges=new ArrayList[vertices];
+		for(int i=0;i<vertices;i++){
+				edges[i]=new ArrayList<>();
+		}
+	}
 	public String getGraphType() {
 		return graphType;
 	}
@@ -96,82 +109,51 @@ class AdjMatrixGraph {
 	public void setGraphType(String graphType) {
 		this.graphType = graphType;
 	}
-	
-
-}
-
-class AdjListGraph {
-
-	private String graphType;
-	private int vertices;
-	private LinkedList<Integer>[] edges;
-
-	public AdjListGraph(String graphType,int vertices) {
-		this.graphType = graphType;
-		this.vertices = vertices;
-		this.edges = new LinkedList[vertices];
-
-		for (int i = 0; i < vertices; i++) {
-			edges[i] = new LinkedList<>();
-		}
-	}
-
-	public void addEdge(int src, int dest) {
-		if (!edges[src].contains(dest)) {
-			edges[src].add(dest);
-		}
-		if(this.graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
-			if (!edges[dest].contains(src)) {
-				edges[dest].add(src);
-			}
-		}
-	}
-
-	public void removeEdge(int src, int dest) {
-		if (edges[src].contains(dest)) {
-			edges[src].remove(dest);
-		}
-		if(this.graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
-			if (edges[dest].contains(src)) {
-				edges[dest].remove(src);
-			}
-		}
-	}
-
-	public void printGraph() {
-		for (int i = 0; i < vertices; i++) {
-			System.out.println("\nAdjacency List of Vertex :" + i);
-			for (Integer j : edges[i]) {
-				System.out.print("->" + j);
-			}
-			System.out.print("\n");
-		}
-		System.out.print("-----------------------------------------------------------");
-	}
-
-	public void init() {
-		this.addEdge(0, 1);
-		this.addEdge(0, 2);
-		this.addEdge(1, 2);
-		this.addEdge(2, 0);
-		this.addEdge(2, 3);
-		this.addEdge(3, 3);
-	}
-
 	public int getVertices() {
 		return vertices;
 	}
-
 	public void setVertices(int vertices) {
 		this.vertices = vertices;
 	}
-
-	public LinkedList<Integer>[] getEdges() {
+	public List<Integer>[] getEdges() {
 		return edges;
 	}
-
-	public void setEdges(LinkedList<Integer>[] edges) {
+	public void setEdges(List<Integer>[] edges) {
 		this.edges = edges;
 	}
-
+	void addEdge(int src, int dest){
+		edges[src].add(dest);
+		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+			edges[dest].add(src);
+		}
+	}
+	
+	void removeEdge(int src, int dest){
+		edges[src].remove(dest);
+		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+			edges[dest].remove(src);
+		}
+	}
+	
+	void printGraph(){
+		for(int i=0;i<vertices;i++){
+			System.out.println("Adjacency List of Vertex :" + i);
+			for(int j=0;j<edges[i].size();j++){
+				System.out.print(edges[i].get(j) + " -> ");
+			}
+			System.out.println("");
+		}
+	}
+	
+	void init(){
+		addEdge(0, 1); 
+	    addEdge(0, 4); 
+	    addEdge(1, 2); 
+	    addEdge(1, 3); 
+	    addEdge(1, 4); 
+	    addEdge(2, 3); 
+	    addEdge(3, 4); 
+	    printGraph(); 
+	}
+	
 }

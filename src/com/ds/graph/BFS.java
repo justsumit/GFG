@@ -1,40 +1,35 @@
 package com.ds.graph;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class BFS {
 
 	public static void main(String args[]) {
-		AdjListGraph graph = new AdjListGraph(GraphRepresentation.DIRECTED_GRAPH_TYPE,4);
+		AdjacenyListGraph graph = new AdjacenyListGraph(GraphRepresentation.DIRECTED_GRAPH_TYPE,5);
 		graph.init();
-		graph.printGraph();
 		bfsTraversal(graph, 2);
 
 	}
 
-	public static void bfsTraversal(AdjListGraph graph, int source) {
+	public static void bfsTraversal(AdjacenyListGraph graph, int source) {
 
-		List<Integer> visited=new ArrayList<>();
-		
 		LinkedList<Integer> queue= new LinkedList<>();
+		boolean[] visited=new boolean[graph.getVertices()];
+		
 		queue.add(source);
+		visited[source]=true;
 		
 		while(queue.size()!=0){
 			source=queue.poll();
-			visited.add(source);
 			System.out.print(source + " ");
-			
-			for(int i : graph.getEdges()[source]){
-				if(!visited.contains(i)){
-					visited.add(i);
+			for(int i: graph.getEdges()[source]){
+				if(visited[i]!=true){
+					visited[i]=true;
 					queue.add(i);
 				}
 			}
+			
 		}
-		
-
 	}
 
 }
