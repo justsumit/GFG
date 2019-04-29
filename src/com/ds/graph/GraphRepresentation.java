@@ -58,13 +58,13 @@ class AdjacenyMatrixGraph{
 	}
 	public void addEdge(int src, int dest){
 		edges[src][dest]=1;
-		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+		if(graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
 			edges[dest][src ]=1;
 		}
 	}
 	public void removeEdge(int src, int dest){
 		edges[src][dest]=0;
-		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+		if(graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
 			edges[dest][src ]=0;
 		}
 	}
@@ -123,14 +123,14 @@ class AdjacenyListGraph{
 	}
 	void addEdge(int src, int dest){
 		edges[src].add(dest);
-		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+		if(graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
 			edges[dest].add(src);
 		}
 	}
 	
 	void removeEdge(int src, int dest){
 		edges[src].remove(dest);
-		if(graphType.equals(GraphRepresentation.DIRECTED_GRAPH_TYPE)){
+		if(graphType.equals(GraphRepresentation.UNDIRECTED_GRAPH_TYPE)){
 			edges[dest].remove(src);
 		}
 	}
